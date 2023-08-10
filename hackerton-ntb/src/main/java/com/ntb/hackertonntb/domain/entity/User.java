@@ -1,11 +1,12 @@
 package com.ntb.hackertonntb.domain.entity;
 
+import com.ntb.hackertonntb.dto.UserDto;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -15,11 +16,11 @@ public class User extends TimeEntity{
     @GeneratedValue
     private int id;
 
-    @Column(length = 45, nullable = false)
-    private String loginid;
+    @Column(length = 45, nullable = false, unique = true)
+    private String loginId;
 
-    @Column(length = 45, nullable = false)
-    private String loginpassword;
+    @Column(length = 255, nullable = false)
+    private String password;
 
     @Column(length = 245, nullable = false)
     private String introduce;
@@ -27,12 +28,52 @@ public class User extends TimeEntity{
     @Column(length = 45, nullable = false)
     private String name;
 
+    @Column(length = 45, nullable = false)
+    private String openChat;
+
+    @Column(length = 45, nullable = false)
+    private String email;
+
+    @Column(length = 245, nullable = false)
+    private String profileName;
+
+    @Column(length = 245, nullable = false)
+    private String profilePath;
+
+    @Column
+    private String role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Gesipan> gesipans = new ArrayList<>();
+
+
+
     @Builder
-    public User(int id, String loginid, String loginpassword, String introduce, String name){
+    public User(
+            int id, String loginId,
+            String password,
+            String introduce,
+            String name,
+            String openChat,
+            String email,
+            String profileName,
+            String profilePath,
+            String role
+    ){
         this.id = id;
-        this.loginid = loginid;
-        this.loginpassword = loginpassword;
+        this.loginId = loginId;
+        this.password = password;
         this.introduce = introduce;
         this.name = name;
+        this.openChat = openChat;
+        this.email = email;
+        this.profileName = profileName;
+        this.profilePath = profilePath;
+        this.role = role;
     }
+
+
 }

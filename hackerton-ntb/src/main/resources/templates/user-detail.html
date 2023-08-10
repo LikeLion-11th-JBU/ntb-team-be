@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 상세 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .layout {
+            width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4d79ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #3457b2;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            cursor: pointer;
+            color: #4d79ff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <img th:src="@{/files/{profileName}(profileName=${userDto.profileName})}" alt="프로필 이미지" style="max-width: 200px;">
+    <p th:text="${userDto.name}">이름</p>
+    <h1 th:text="${userDto.introduce}">소개</h1>
+    <p th:text="${userDto.email}">채팅</p>
+    <p th:text="${userDto.openChat}">채팅</p>
+    <p class="back-link" onclick="goBack()">돌아가기</p>
+    <a class="button" th:href="@{/main/user/delete}" onclick="return confirm('정말로 이 사용자를 삭제하시겠습니까?')">회원 탈퇴</a>
+    <a class="button" th:href="@{/main/user/update}" >회원 정보 수정</a>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</body>
+</html>

@@ -2,10 +2,7 @@ package com.ntb.hackertonntb.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -20,6 +17,10 @@ public class Gesipan extends TimeEntity{
 
     @Column(length = 100, nullable = false)
     private String comment;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User users;
 
     @Builder
     public Gesipan(int id, String detail, String comment) {

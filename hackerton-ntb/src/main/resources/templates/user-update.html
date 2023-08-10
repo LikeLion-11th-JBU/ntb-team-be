@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Info Update</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<form action="/main/user/update" method="post" th:object="${userDto}" enctype="multipart/form-data" onsubmit="return validateForm();">
+
+  <h1>유저 정보 수정</h1>
+  <img th:src="@{/files/}+${userDto.profileName}" alt="프로필 이미지" style="max-width: 200px;">
+  <label for="profile">프로필 사진 변경:</label>
+  <input type="file" id="profile" name="profile" accept=".jpg, .png" required>
+
+  <label for="name">이름:</label>
+  <input type="text" id="name" name="name" th:value="${userDto.name}" required>
+
+  <label for="Introduce">소개:</label>
+  <textarea id="Introduce" name="Introduce" required th:text="${userDto.Introduce}"></textarea>
+
+  <label for="openChat">오픈 채팅 주소:</label>
+  <input type="text" id="openChat" name="openChat" th:value="${userDto.openChat}" required>
+
+  <label for="email">이메일:</label>
+  <input type="text" id="email" name="email" th:value="${userDto.email}" required>
+
+  <button type="submit">수정 완료</button>
+</form>
+</body>
+</html>
