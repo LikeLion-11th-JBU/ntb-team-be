@@ -26,9 +26,10 @@ public class HaveSkillService {
 
     private final HaveSkillRepository haveSkillRepository;
 
-    public void save(HaveSkillDto haveSkillDto) {
 
-        HaveSkill newHaveSkills = haveSkillDto.toEntity();
+    public void save(HaveSkillDto haveSkillDto, Skills skills) {
+
+        HaveSkill newHaveSkills = haveSkillDto.toEntity(skills);
         haveSkillRepository.save(newHaveSkills);
     }
 }

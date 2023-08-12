@@ -22,9 +22,10 @@ public class SmallCategoryService {
 
         private final SmallCategoryRepository smallCategoryRepository;
 
-        public void save(SmallCategoryDto smallCategoryDto) {
 
-            SmallCategory newSmallCategory = smallCategoryDto.toEntity();
+        public void save(SmallCategoryDto smallCategoryDto, Category categories) {
+
+            SmallCategory newSmallCategory = smallCategoryDto.toEntity(categories);
             smallCategoryRepository.save(newSmallCategory);
         }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,14 @@ import java.util.List;
 public class SmallCategory {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "smallcategory_id")
     private int id;
 
     @Column(length = 45, nullable = false)
     private String smallcategoryname;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category categories;
 
@@ -30,10 +32,10 @@ public class SmallCategory {
     private List<Skills> skills = new ArrayList<>();
 
     @Builder
-    public SmallCategory(int id, String smallcategoryname, Category categories) {
-        this.id = id;
+    public SmallCategory(String smallcategoryname, Category categories, List<Skills> skills) {
         this.smallcategoryname = smallcategoryname;
         this.categories = categories;
+        this.skills = skills;
     }
 
 }

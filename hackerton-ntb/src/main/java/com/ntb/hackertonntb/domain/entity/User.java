@@ -13,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends TimeEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
 
     @Column(length = 45, nullable = false, unique = true)
@@ -51,9 +52,10 @@ public class User extends TimeEntity{
 
 
 
+
     @Builder
     public User(
-            int id, String loginId,
+            String loginId,
             String password,
             String introduce,
             String name,
@@ -61,9 +63,9 @@ public class User extends TimeEntity{
             String email,
             String profileName,
             String profilePath,
-            String role
+            String role,
+            List<Category> categories
     ){
-        this.id = id;
         this.loginId = loginId;
         this.password = password;
         this.introduce = introduce;
@@ -73,6 +75,7 @@ public class User extends TimeEntity{
         this.profileName = profileName;
         this.profilePath = profilePath;
         this.role = role;
+        this.categories = categories;
     }
 
 

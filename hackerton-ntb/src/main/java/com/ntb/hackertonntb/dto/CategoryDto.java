@@ -1,12 +1,12 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.Category;
+import com.ntb.hackertonntb.domain.entity.SmallCategory;
 import com.ntb.hackertonntb.domain.entity.User;
-import com.ntb.hackertonntb.domain.repository.UserRepository;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 @Getter
@@ -21,17 +21,21 @@ public class CategoryDto {
 
     private User users;
 
-    public Category toEntity(){
+    private List<SmallCategory> smallCategories;
+
+    public Category toEntity(User users){
         Category build = Category.builder()
-                .id(id)
                 .categoryname(categoryname)
+                .users(users)
+                .smallCategories(smallCategories)
                 .build();
         return build;
     }
     @Builder
-    public CategoryDto(int id, String categoryname, User users){
+    public CategoryDto(int id,String categoryname, User users, List<SmallCategory> smallCategories){
         this.id = id;
         this.categoryname = categoryname;
         this.users = users;
+        this.smallCategories =smallCategories;
     }
 }

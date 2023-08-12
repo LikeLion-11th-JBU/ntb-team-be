@@ -18,14 +18,15 @@ public class Gesipan extends TimeEntity{
     @Column(length = 100, nullable = false)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User users;
 
     @Builder
-    public Gesipan(int id, String detail, String comment) {
+    public Gesipan(int id, String detail, String comment, User users) {
         this.id = id;
         this.detail = detail;
         this.comment = comment;
+        this.users = users;
     }
 }

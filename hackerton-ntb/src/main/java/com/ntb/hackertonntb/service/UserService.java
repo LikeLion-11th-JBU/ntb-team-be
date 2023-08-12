@@ -1,8 +1,8 @@
 package com.ntb.hackertonntb.service;
 
-import com.ntb.hackertonntb.domain.entity.User;
-import com.ntb.hackertonntb.domain.repository.UserRepository;
-import com.ntb.hackertonntb.dto.UserDto;
+import com.ntb.hackertonntb.domain.entity.*;
+import com.ntb.hackertonntb.domain.repository.*;
+import com.ntb.hackertonntb.dto.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,6 +27,15 @@ public class UserService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final SmallCategoryRepository smallCategoryRepository;
+    private final SkillsRepository skillsRepository;
+    private final HaveSkillRepository haveSkillRepository;
+    private final WantSkillRepository wantSkillRepository;
+    private final WantSkillService wantSkillService;
+    private final HaveSkillService haveSkillService;
+
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -60,6 +69,8 @@ public class UserService implements UserDetailsService {
 
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encryptedPassword);
+        userDto.setRole("SUPER");
+
         User newUser = userDto.toEntity();
         userRepository.save(newUser);
     }
@@ -68,7 +79,6 @@ public class UserService implements UserDetailsService {
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
-
 
 
     //사용자 정보 가져오기
@@ -151,7 +161,5 @@ public class UserService implements UserDetailsService {
         userDto.setProfilePath("/files/" + profileName);
         User newUser = userDto.toEntity();
         userRepository.save(newUser);
-
     }
-
 }

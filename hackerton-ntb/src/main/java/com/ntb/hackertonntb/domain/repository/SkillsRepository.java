@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SkillsRepository extends JpaRepository<Skills, Long> {
+public interface SkillsRepository extends JpaRepository<Skills, Integer> {
+
+    Skills findById(int id);
 
     List<Skills> findByIdContaining(String keyword);
 }

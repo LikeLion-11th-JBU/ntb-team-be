@@ -2,10 +2,12 @@ package com.ntb.hackertonntb.dto;
 
 
 import com.ntb.hackertonntb.domain.entity.Category;
+import com.ntb.hackertonntb.domain.entity.Skills;
 import com.ntb.hackertonntb.domain.entity.SmallCategory;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,17 +21,21 @@ public class SmallCategoryDto {
 
         private Category categories;
 
-        public SmallCategory toEntity(){
+        private List<Skills> skills;
+
+        public SmallCategory toEntity(Category categories){
             SmallCategory build = SmallCategory.builder()
-                    .id(id)
                     .smallcategoryname(smallcategoryname)
+                    .categories(categories)
+                    .skills(skills)
                     .build();
             return build;
         }
         @Builder
-        public SmallCategoryDto(int id, String smallcategoryname, Category categories){
+        public SmallCategoryDto(String smallcategoryname, Category categories, List<Skills> skills ){
             this.id = id;
             this.smallcategoryname = smallcategoryname;
             this.categories = categories;
+            this.skills = skills;
         }
     }

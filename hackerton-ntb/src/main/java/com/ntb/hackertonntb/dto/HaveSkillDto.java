@@ -11,19 +11,17 @@ import lombok.*;
 @NoArgsConstructor
 public class HaveSkillDto {
     private int id;
-    private Skills skills;
+    private Skills haveSkills;
 
-    public HaveSkill toEntity(){
+    public HaveSkill toEntity(Skills haveSkills){
         HaveSkill build = HaveSkill.builder()
-                .id(id)
-                .skills(skills)
+                .haveSkills(haveSkills)
                 .build();
         return build;
     }
 
     @Builder
-    public HaveSkillDto(int id, Skills skills){
-        this.id = id;
-        this.skills = skills;
+    public HaveSkillDto(Skills haveSkills){
+        this.haveSkills = haveSkills;
     }
 }

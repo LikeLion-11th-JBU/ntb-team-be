@@ -1,5 +1,6 @@
 package com.ntb.hackertonntb.dto;
 
+import com.ntb.hackertonntb.domain.entity.Category;
 import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,10 +50,11 @@ public class UserDto {
 
     private String role;
 
+    private List<Category> categories;
+
 
     public User toEntity(){
-        User build = User.builder() // 필수값 입력 ( 빌더클래스 생성자로 빌더객체 생성)
-                .id(id)
+        User build = User.builder()
                 .loginId(loginId)
                 .password(password)
                 .introduce(introduce)
@@ -61,15 +64,13 @@ public class UserDto {
                 .profileName(profileName)
                 .profilePath(profilePath)
                 .role(role)
+                .categories(categories)
                 .build();  //build() 가 객체를 생성해 돌려준다.
         return build;
     }
 
-
-
     @Builder
     public UserDto(
-            int id,
             String loginId,
             String password,
             String introduce,
@@ -79,9 +80,9 @@ public class UserDto {
             String email,
             String profileName,
             String profilePath,
-            String role
+            String role,
+            List<Category> categories
     ){
-        this.id = id;
         this.loginId = loginId;
         this.password = password;
         this.introduce = introduce;
@@ -92,5 +93,6 @@ public class UserDto {
         this.profileName = profileName;
         this.profilePath = profilePath;
         this.role = role;
+        this.categories = categories;
     }
 }

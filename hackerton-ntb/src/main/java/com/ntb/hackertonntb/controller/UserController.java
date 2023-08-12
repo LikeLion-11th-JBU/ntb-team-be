@@ -1,5 +1,7 @@
 package com.ntb.hackertonntb.controller;
 
+import com.ntb.hackertonntb.domain.entity.*;
+import com.ntb.hackertonntb.domain.repository.*;
 import com.ntb.hackertonntb.dto.*;
 import com.ntb.hackertonntb.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +35,9 @@ public class UserController {
     private final CategoryService categoryService;
     private final SkillsService skillsService;
     private final SmallCategoryService smallCategoryService;
+    private final HaveSkillService haveSkillService;
+    private final WantSkillService wantSkillService;
+    private final UserRepository userRepository;
 
 
     @GetMapping("main")
@@ -62,14 +67,6 @@ public class UserController {
     }
 
 
-    @GetMapping("main/signup")
-    @Operation(summary = "회원가입 페이지", description = "회원가입 페이지 입니다.", tags = {"UserPage"})
-    public String signupForm(
-    ) {
-        return "signup-form";
-    }
-
-
     @PostMapping("main/signup")
     @Operation(summary = "회원가입 요청", description = "회원가입 요청 입니다.", tags = {"UserRequest"})
     public String signup(
@@ -85,41 +82,49 @@ public class UserController {
             @RequestParam("haveSkillKeyword2") String haveSkillKeyword2,
             @RequestParam("haveSkillKeyword3") String haveSkillKeyword3,
             MultipartFile profile
-            ) throws  Exception
+    ) throws  Exception
     {
+        userService.save(userDto,profile);
+        User userEntity = userRepository.findByLoginId(userDto.getLoginId());
 
         CategoryDto haveCategory = new CategoryDto();
         haveCategory.setCategoryname(haveSkillCategory);
-
+        Category haveCategoryEntity = haveCategory.toEntity(userEntity);
         SmallCategoryDto smallHaveCategory = new SmallCategoryDto();
         smallHaveCategory.setSmallcategoryname(smallHaveSkillCategory);
-
+        SmallCategory smallHaveEntity = smallHaveCategory.toEntity(haveCategoryEntity);
         SkillsDto haveSkill = new SkillsDto();
         haveSkill.setSkillname(haveSkillKeyword1);
         haveSkill.setSkillname2(haveSkillKeyword2);
         haveSkill.setSkillname3(haveSkillKeyword3);
+        Skills haveSkillEntity = haveSkill.toEntity(smallHaveEntity);
+        HaveSkillDto haveEntity = new HaveSkillDto();
+        haveSkillService.save(haveEntity,haveSkillEntity);
 
         CategoryDto wantCategory = new CategoryDto();
         wantCategory.setCategoryname(wantSkillCategory);
-
+        Category wantCategoryEntity = wantCategory.toEntity(userEntity);
         SmallCategoryDto smallWantCategory = new SmallCategoryDto();
         smallWantCategory.setSmallcategoryname(smallWantSkillCategory);
-
+        SmallCategory smallWantEntity = smallWantCategory.toEntity(wantCategoryEntity);
         SkillsDto wantSkill = new SkillsDto();
         wantSkill.setSkillname(wantSkillKeyword1);
         wantSkill.setSkillname2(wantSkillKeyword2);
         wantSkill.setSkillname3(wantSkillKeyword3);
-
-
-        userService.save(userDto,profile);
-        categoryService.save(haveCategory);
-        smallCategoryService.save(smallHaveCategory);
-        skillsService.save(haveSkill);
-        categoryService.save(wantCategory);
-        smallCategoryService.save(smallHaveCategory);
-        skillsService.save(wantSkill);
+        Skills wantSkillEntity = wantSkill.toEntity(smallWantEntity);
+        WantSkillDto wantEntity = new WantSkillDto();
+        wantSkillService.save(wantEntity,wantSkillEntity);
         return "redirect:/main";
     }
+
+
+    @GetMapping("main/signup")
+    @Operation(summary = "회원가입 페이지", description = "회원가입 페이지 입니다.", tags = {"UserPage"})
+    public String signupForm(
+    ) {
+        return "signup-form";
+    }
+
 
 
     @GetMapping("main/signup/{loginId}/exists")
@@ -167,15 +172,10 @@ public class UserController {
     ) throws Exception {
         userService.deleteByImage(principal.getName());
         UserDto updateUser = userService.findByUser(principal.getName());
-        updateUser.setId(updateUser.getId());
-        updateUser.setLoginId(updateUser.getLoginId());
-        updateUser.setCreated(updateUser.getCreated());
-        updateUser.setPassword(updateUser.getPassword());
         updateUser.setName(userDto.getName());
         updateUser.setIntroduce(userDto.getIntroduce());
         updateUser.setOpenChat(userDto.getOpenChat());
         updateUser.setEmail(userDto.getEmail());
-        updateUser.setPassword(updateUser.getPassword());
         userService.update(updateUser,profile);
         return "redirect:/main/user/detail";
     }
@@ -216,3 +216,4 @@ public class UserController {
         return "admin";
     }
 }
+

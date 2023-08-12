@@ -1,6 +1,7 @@
 package com.ntb.hackertonntb.service;
 
 import com.ntb.hackertonntb.domain.entity.HaveSkill;
+import com.ntb.hackertonntb.domain.entity.Skills;
 import com.ntb.hackertonntb.domain.entity.WantSkill;
 import com.ntb.hackertonntb.domain.repository.HaveSkillRepository;
 import com.ntb.hackertonntb.domain.repository.WantSkillRepository;
@@ -21,9 +22,10 @@ public class WantSkillService {
 
     private final WantSkillRepository wantSkillRepository;
 
-    public void save(WantSkillDto wantSkillDto) {
 
-        WantSkill newWantSkills = wantSkillDto.toEntity();
+    public void save(WantSkillDto wantSkillDto, Skills skills) {
+
+        WantSkill newWantSkills = wantSkillDto.toEntity(skills);
         wantSkillRepository.save(newWantSkills);
     }
 }

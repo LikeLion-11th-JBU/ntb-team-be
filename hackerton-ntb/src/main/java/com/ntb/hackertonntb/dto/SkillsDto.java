@@ -1,11 +1,14 @@
 package com.ntb.hackertonntb.dto;
 
-import com.ntb.hackertonntb.domain.entity.Category;
-import com.ntb.hackertonntb.domain.entity.Skills;
-import com.ntb.hackertonntb.domain.entity.SmallCategory;
+import com.ntb.hackertonntb.domain.entity.*;
 import lombok.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -26,9 +29,13 @@ public class SkillsDto {
 
     private SmallCategory smallCategories;
 
-    public Skills toEntity(){
+    private List<HaveSkill> haveSkills;
+
+    private List<WantSkill> wantSkills;
+
+
+    public Skills toEntity(SmallCategory smallCategories){
         Skills build = Skills.builder()
-                .id(id)
                 .skillname(skillname)
                 .skillname2(skillname2)
                 .skillname3(skillname3)
@@ -38,11 +45,18 @@ public class SkillsDto {
     }
 
     @Builder
-    public SkillsDto(int id, String skillname, String skillname2, String skillname3, SmallCategory smallCategories){
-        this.id = id;
+    public SkillsDto(String skillname,
+                     String skillname2,
+                     String skillname3,
+                     SmallCategory smallCategories,
+                     List<HaveSkill> haveSkills,
+                     List<WantSkill> wantSkills){  // 리스트들을 받는 생성자 추가
         this.skillname = skillname;
         this.skillname2 = skillname2;
         this.skillname3 = skillname3;
         this.smallCategories = smallCategories;
+        this.haveSkills = haveSkills;
+        this.wantSkills = wantSkills;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.Gesipan;
+import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,21 +15,24 @@ public class GesipanDto {
     private LocalDateTime date;
     private String detail;
     private String comment;
+    private User users;
 
-    public Gesipan toEntity(){
+    public Gesipan toEntity(User users){
         Gesipan build = Gesipan.builder()
                 .id(id)
                 .detail(detail)
                 .comment(comment)
+                .users(users)
                 .build();
         return build;
     }
 
     @Builder
-    public GesipanDto(int id, String detail, String comment, LocalDateTime date){
+    public GesipanDto(int id, String detail, String comment, LocalDateTime date, User users){
         this.id = id;
         this.detail = detail;
         this.comment = comment;
         this.date = date;
+        this.users = users;
     }
 }

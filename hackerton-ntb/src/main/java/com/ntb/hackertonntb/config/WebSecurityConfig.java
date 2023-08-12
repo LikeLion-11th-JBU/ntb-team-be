@@ -34,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(this.userDetailsService);
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
@@ -89,5 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
 }
 
