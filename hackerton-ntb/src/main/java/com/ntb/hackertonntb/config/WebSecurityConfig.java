@@ -4,6 +4,7 @@ import com.ntb.hackertonntb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,25 +47,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() //이거 추가하면 우회 하는거고 사실상 보안상 취약함
                 .authorizeRequests()
-                .antMatchers("/main/super").hasRole("SUPER")
+//                .antMatchers("/main/super").hasRole("SUPER")
                 .antMatchers(
-                        "/swagger-ui/index.html",
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/main",
-                        "/main/signup",
-                        "/main/login",
-                        "/main/signup/**"
+                        "/**"
+//                        "/swagger-ui/index.html",
+//                        "/v3/api-docs/**",
+//                        "/swagger-ui/**",
+//                        "/swagger-resources/**",
+//                        "/main",
+//                        "/main/signup",
+//                        "/main/login",
+//                        "/main/signup/**"
                 ).permitAll() // 나중에 스웨거는 권한 바꺼야해.
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/main/login") // 로그인 페이지
+                .loginProcessingUrl("/main/login")
                 .usernameParameter("loginId")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/main") //메인 페이지 이동
-                .failureUrl("/main/login?error=true")
+                .successHandler((request, response, authentication) -> {
+                    // 로그인 성공 시 JSON 응답 생성
+                    response.setStatus(HttpStatus.OK.value());
+                    response.getWriter().println("{\"message\": \"Login successful\"}");
+                })
+                .failureHandler((request, response, exception) -> {
+                    // 로그인 실패 시 JSON 응답 생성
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    response.getWriter().println("{\"message\": \"Login failed\"}");
+                })
                 .permitAll()
                 .and()
                 .logout()
