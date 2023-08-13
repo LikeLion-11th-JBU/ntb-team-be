@@ -51,77 +51,8 @@ public class UserController {
     @GetMapping("main")
     @Operation(summary = "메인 페이지", description = "메인 페이지 입니다.", tags = {"testMainPage"})
     public ResponseEntity<?> main(
-            @RequestBody Principal principal
     ) {
-        try {
-            if (principal != null) {
-                User user = userRepository.findByLoginId(principal.getName());
-                List<Category> categories = user.getCategories();
-
-                List<Category> haveCategories = new ArrayList<>();
-                List<Category> wantCategories = new ArrayList<>();
-
-                for (Category category : categories) {
-                    if (category.getId() % 2 != 1) {
-                        wantCategories.add(category);
-                    } else {
-                        haveCategories.add(category);
-                    }
-                }
-                List<SmallCategory> smallCategories = new ArrayList<>();
-                for (Category category : categories) {
-                    List<SmallCategory> smallCategoriesForCategory = category.getSmallCategories();
-                    smallCategories.addAll(smallCategoriesForCategory);
-                }
-                List<SmallCategory> wantSmallCategories = new ArrayList<>();
-                List<SmallCategory> haveSmallCategories = new ArrayList<>();
-
-                for (SmallCategory smallCategory : smallCategories) {
-                    if (smallCategory.getId() % 2 != 1) {
-                        wantSmallCategories.add(smallCategory);
-                    } else {
-                        haveSmallCategories.add(smallCategory);
-                    }
-                }
-                List<Skills> skiils = new ArrayList<>();
-                for (SmallCategory smallCategory : smallCategories) {
-                    List<Skills> skillsForSmallCategory = smallCategory.getSkills();
-                    skiils.addAll(skillsForSmallCategory);
-                }
-                List<Skills> wantSkills = new ArrayList<>();
-                List<Skills> haveSkills = new ArrayList<>();
-
-                for (SmallCategory smallCategory : smallCategories) {
-                    List<Skills> skillsForSmallCategory = smallCategory.getSkills();
-
-                    for (Skills skill : skillsForSmallCategory) {
-                        List<WantSkill> wantSkillsForSkill = skill.getWantSkills();
-                        List<HaveSkill> haveSkillsForSkill = skill.getHaveSkills();
-
-                        if (!wantSkillsForSkill.isEmpty()) {
-                            wantSkills.add(skill);
-                        } else if (!haveSkillsForSkill.isEmpty()) {
-                            haveSkills.add(skill);
-                        }
-                    }
-                }
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("userDto", user);
-                responseData.put("wantCategories", wantCategories);
-                responseData.put("haveCategories", haveCategories);
-                responseData.put("wantSmallCategories", wantSmallCategories);
-                responseData.put("haveSmallCategories", haveSmallCategories);
-                responseData.put("wantSkills", wantSkills);
-                responseData.put("haveSkills", haveSkills);
-
-                return ResponseEntity.ok(responseData);
-
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
-            }
-        } catch (NullPointerException e) {
-        }
-        return ResponseEntity.ok("no user login");
+        return ResponseEntity.ok("환영 합니다");
     }
 
 
