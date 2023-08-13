@@ -85,6 +85,55 @@
   <label for="email">이메일:</label>
   <input type="text" id="email" name="email" th:value="${userDto.email}" required>
 
+
+
+  <h2>원하는 카테고리</h2>
+  <ul>
+    <li th:each="category : ${wantCategories}">
+      <label for="wantSkillCategory">원하는 재능 카테고리:</label>
+      <input type="text" id="wantSkillCategory" name="wantSkillCategory" th:value="${category.categoryname}">
+      <ul>
+        <li th:each="smallCategory : ${category.smallCategories}">
+          <label for="smallWantSkillCategory">원하는 재능 세부 카테고리:</label>
+          <input  type="text" id="smallWantSkillCategory" name="smallWantSkillCategory" th:value="${smallCategory.smallcategoryname}">
+          <ul>
+            <li th:each="skill : ${smallCategory.skills}">
+              <label for="wantSkillKeyword1">원하는 재능 1:</label>
+              <input type="text" id="wantSkillKeyword1" name="wantSkillKeyword1" th:value="${skill.skillname}">
+              <label for="wantSkillKeyword2">원하는 재능 2:</label>
+              <input type="text" id="wantSkillKeyword2" name="wantSkillKeyword2" th:value="${skill.skillname2}">
+              <label for="wantSkillKeyword3">원하는 재능 3:</label>
+              <input  type="text" id="wantSkillKeyword3" name="wantSkillKeyword3" th:value="${skill.skillname3}">
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <h2>가지고 있는 카테고리</h2>
+  <ul>
+    <li th:each="category : ${haveCategories}">
+      <label for="haveSkillCategory">주고 싶은 재능 카테고리:</label>
+      <input type="text" id="haveSkillCategory" name="haveSkillCategory" th:value="${category.categoryname}">
+      <ul>
+        <li th:each="smallCategory : ${category.smallCategories}">
+          <label for="smallHaveSkillCategory">주고 싶은 재능 세부 카테고리:</label>
+          <input type="text" id="smallHaveSkillCategory" name="smallHaveSkillCategory" th:value="${smallCategory.smallcategoryname}">
+          <ul>
+            <li th:each="skill : ${smallCategory.skills}">
+              <label for="haveSkillKeyword1">주고 싶은 재능 1:</label>
+              <input  type="text" id="haveSkillKeyword1" name="haveSkillKeyword1" th:value="${skill.skillname}">
+              <label for="haveSkillKeyword2">주고 싶은 재능 2:</label>
+              <input  type="text" id="haveSkillKeyword2" name="haveSkillKeyword2" th:value="${skill.skillname2}">
+              <label for="haveSkillKeyword3">주고 싶은 재능 3:</label>
+              <input type="text" id="haveSkillKeyword3" name="haveSkillKeyword3" th:value="${skill.skillname3}">
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
   <button type="submit">수정 완료</button>
 </form>
 </body>

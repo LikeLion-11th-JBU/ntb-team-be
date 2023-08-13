@@ -28,4 +28,5 @@ public class WantSkillService {
         WantSkill newWantSkills = wantSkillDto.toEntity(skills);
         wantSkillRepository.save(newWantSkills);
     }
+
 }

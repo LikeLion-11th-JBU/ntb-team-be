@@ -32,10 +32,15 @@ public class CategoryDto {
         return build;
     }
     @Builder
-    public CategoryDto(int id,String categoryname, User users, List<SmallCategory> smallCategories){
+    public CategoryDto(int id,
+                       String categoryname,
+                       User users,
+                       List<SmallCategory> smallCategories
+    ){
         this.id = id;
         this.categoryname = categoryname;
         this.users = users;
-        this.smallCategories =smallCategories;
+        this.smallCategories = smallCategories;
     }
+
 }

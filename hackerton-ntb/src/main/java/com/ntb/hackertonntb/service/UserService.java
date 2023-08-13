@@ -121,7 +121,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(userDto.getId());
     }
 
-    // 유저 프로필 사진 변경
+    // 유저 프로필 사진 변경 전 삭제
     public void deleteByImage(String loginId) {
         User user = userRepository.findByLoginId(loginId);
         UserDto userDto = new UserDto();
@@ -141,8 +141,8 @@ public class UserService implements UserDetailsService {
             userProfile.delete();
         }
     }
-    // 회원 가입 기능 입니다.
-    public void update(UserDto userDto, MultipartFile profile) throws Exception {
+    // 프로필 사진 변경 업로드
+    public void updateByImage(UserDto userDto, MultipartFile profile) throws Exception {
 
         // 프로필 사진 저장
         String projectPath = Paths.get(

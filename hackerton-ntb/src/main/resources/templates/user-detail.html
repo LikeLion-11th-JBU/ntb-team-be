@@ -60,9 +60,49 @@
     <p th:text="${userDto.email}">채팅</p>
     <p th:text="${userDto.openChat}">채팅</p>
 
+    <h2>원하는 재능 List</h2>
+    <ul>
+        <li th:each="category : ${wantCategories}">
+            <p th:text="${category.categoryname}"></p>
+            <ul>
+                <li th:each="smallCategory : ${category.smallCategories}">
+                    <p th:text="${smallCategory.smallcategoryname}"></p>
+                    <ul>
+                        <li th:each="skill : ${smallCategory.skills}">
+                            <p th:text="${skill.skillname}"></p>
+                            <p th:text="${skill.skillname2}"></p>
+                            <p th:text="${skill.skillname3}"></p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>나누고 싶은 재능 List</h2>
+    <ul>
+        <li th:each="category : ${haveCategories}">
+            <p th:text="${category.categoryname}"></p>
+            <ul>
+                <li th:each="smallCategory : ${category.smallCategories}">
+                    <p th:text="${smallCategory.smallcategoryname}"></p>
+                    <ul>
+                        <li th:each="skill : ${smallCategory.skills}">
+                            <p th:text="${skill.skillname}"></p>
+                            <p th:text="${skill.skillname2}"></p>
+                            <p th:text="${skill.skillname3}"></p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
     <p class="back-link" onclick="goBack()">돌아가기</p>
     <a class="button" th:href="@{/main/user/delete}" onclick="return confirm('정말로 이 사용자를 삭제하시겠습니까?')">회원 탈퇴</a>
     <a class="button" th:href="@{/main/user/update}" >회원 정보 수정</a>
+    </div>
+
 </div>
 
 <script>

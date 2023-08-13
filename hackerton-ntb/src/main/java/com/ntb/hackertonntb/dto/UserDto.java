@@ -64,7 +64,6 @@ public class UserDto {
                 .profileName(profileName)
                 .profilePath(profilePath)
                 .role(role)
-                .categories(categories)
                 .build();  //build() 가 객체를 생성해 돌려준다.
         return build;
     }
@@ -95,4 +94,5 @@ public class UserDto {
         this.role = role;
         this.categories = categories;
     }
+
 }

@@ -21,4 +21,5 @@ public class WantSkill {
     public WantSkill(Skills wantSkills) {
         this.wantSkills = wantSkills;
     }
+
 }

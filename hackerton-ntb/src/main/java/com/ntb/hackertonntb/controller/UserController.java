@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,6 +40,10 @@ public class UserController {
     private final HaveSkillService haveSkillService;
     private final WantSkillService wantSkillService;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final SmallCategoryRepository smallCategoryRepository;
+    private final WantSkillRepository wantSkillRepository;
+    private final SkillsRepository skillsRepository;
 
 
     @GetMapping("main")
@@ -49,8 +55,63 @@ public class UserController {
         try {
             if (principal != null) {
                 logger.info("connect user : {}", principal.getName());
-                UserDto userDto = userService.findByUser(principal.getName());
-                model.addAttribute("userDto", userDto);
+                User user = userRepository.findByLoginId(principal.getName());
+                List<Category> categories = user.getCategories();
+
+                List<Category> haveCategories = new ArrayList<>();
+                List<Category> wantCategories = new ArrayList<>();
+
+                for (Category category : categories) {
+                    if (category.getId() % 2 != 1) {
+                        wantCategories.add(category);
+                    } else {
+                        haveCategories.add(category);
+                    }
+                }
+                List<SmallCategory> smallCategories = new ArrayList<>();
+                for (Category category : categories) {
+                    List<SmallCategory> smallCategoriesForCategory = category.getSmallCategories();
+                    smallCategories.addAll(smallCategoriesForCategory);
+                }
+                List<SmallCategory> wantSmallCategories = new ArrayList<>();
+                List<SmallCategory> haveSmallCategories = new ArrayList<>();
+
+                for (SmallCategory smallCategory : smallCategories) {
+                    if (smallCategory.getId() % 2 != 1) {
+                        wantSmallCategories.add(smallCategory);
+                    } else {
+                        haveSmallCategories.add(smallCategory);
+                    }
+                }
+                List<Skills> skiils = new ArrayList<>();
+                for (SmallCategory smallCategory : smallCategories) {
+                    List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+                    skiils.addAll(skillsForSmallCategory);
+                }
+                List<Skills> wantSkills = new ArrayList<>();
+                List<Skills> haveSkills = new ArrayList<>();
+
+                for (SmallCategory smallCategory : smallCategories) {
+                    List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+
+                    for (Skills skill : skillsForSmallCategory) {
+                        List<WantSkill> wantSkillsForSkill = skill.getWantSkills();
+                        List<HaveSkill> haveSkillsForSkill = skill.getHaveSkills();
+
+                        if (!wantSkillsForSkill.isEmpty()) {
+                            wantSkills.add(skill);
+                        } else if (!haveSkillsForSkill.isEmpty()) {
+                            haveSkills.add(skill);
+                        }
+                    }
+                }
+                model.addAttribute("userDto", user);
+                model.addAttribute("wantCategories", wantCategories);
+                model.addAttribute("haveCategories", haveCategories);
+                model.addAttribute("wantSmallCategories", wantSmallCategories);
+                model.addAttribute("haveSmallCategories", haveSmallCategories);
+                model.addAttribute("wantSkills", wantSkills);
+                model.addAttribute("haveSkills", haveSkills);
             } else {
                 logger.info("no user login");
             }
@@ -84,7 +145,8 @@ public class UserController {
             MultipartFile profile
     ) throws  Exception
     {
-        userService.save(userDto,profile);
+
+        userService.save(userDto, profile);
         User userEntity = userRepository.findByLoginId(userDto.getLoginId());
 
         CategoryDto haveCategory = new CategoryDto();
@@ -134,11 +196,66 @@ public class UserController {
     }
 
 
-    @GetMapping("/main/user/detail")
+    @GetMapping("/main/user")
     @Operation(summary = "유저 상세 페이지", description = "유저 상세 페이지 입니다.", tags = {"UserPage"})
     public String userDetails(Model model, Principal principal) {
-        UserDto userDto = userService.findByUser(principal.getName());
-        model.addAttribute("userDto", userDto);
+        User user = userRepository.findByLoginId(principal.getName());
+        List<Category> categories = user.getCategories();
+
+        List<Category> haveCategories = new ArrayList<>();
+        List<Category> wantCategories = new ArrayList<>();
+
+        for (Category category : categories) {
+            if (category.getId() % 2 != 1) {
+                wantCategories.add(category);
+            } else {
+                haveCategories.add(category);
+            }
+        }
+        List<SmallCategory> smallCategories = new ArrayList<>();
+        for (Category category : categories) {
+            List<SmallCategory> smallCategoriesForCategory = category.getSmallCategories();
+            smallCategories.addAll(smallCategoriesForCategory);
+        }
+        List<SmallCategory> wantSmallCategories = new ArrayList<>();
+        List<SmallCategory> haveSmallCategories = new ArrayList<>();
+
+        for (SmallCategory smallCategory : smallCategories) {
+            if (smallCategory.getId() % 2 != 1) {
+                wantSmallCategories.add(smallCategory);
+            } else {
+                haveSmallCategories.add(smallCategory);
+            }
+        }
+        List<Skills> skiils = new ArrayList<>();
+        for (SmallCategory smallCategory : smallCategories) {
+            List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+            skiils.addAll(skillsForSmallCategory);
+        }
+        List<Skills> wantSkills = new ArrayList<>();
+        List<Skills> haveSkills = new ArrayList<>();
+
+        for (SmallCategory smallCategory : smallCategories) {
+            List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+
+            for (Skills skill : skillsForSmallCategory) {
+                List<WantSkill> wantSkillsForSkill = skill.getWantSkills();
+                List<HaveSkill> haveSkillsForSkill = skill.getHaveSkills();
+
+                if (!wantSkillsForSkill.isEmpty()) {
+                    wantSkills.add(skill);
+                } else if (!haveSkillsForSkill.isEmpty()) {
+                    haveSkills.add(skill);
+                }
+            }
+        }
+        model.addAttribute("userDto", user);
+        model.addAttribute("wantCategories", wantCategories);
+        model.addAttribute("haveCategories", haveCategories);
+        model.addAttribute("wantSmallCategories", wantSmallCategories);
+        model.addAttribute("haveSmallCategories", haveSmallCategories);
+        model.addAttribute("wantSkills", wantSkills);
+        model.addAttribute("haveSkills", haveSkills);
         return "user-detail";
     }
 
@@ -157,8 +274,63 @@ public class UserController {
             Model model,
             Principal principal
     ) {
-        UserDto userDto = userService.findByUser(principal.getName());
-        model.addAttribute("userDto", userDto);
+        User user = userRepository.findByLoginId(principal.getName());
+        List<Category> categories = user.getCategories();
+
+        List<Category> haveCategories = new ArrayList<>();
+        List<Category> wantCategories = new ArrayList<>();
+
+        for (Category category : categories) {
+            if (category.getId() % 2 != 1) {
+                wantCategories.add(category);
+            } else {
+                haveCategories.add(category);
+            }
+        }
+        List<SmallCategory> smallCategories = new ArrayList<>();
+        for (Category category : categories) {
+            List<SmallCategory> smallCategoriesForCategory = category.getSmallCategories();
+            smallCategories.addAll(smallCategoriesForCategory);
+        }
+        List<SmallCategory> wantSmallCategories = new ArrayList<>();
+        List<SmallCategory> haveSmallCategories = new ArrayList<>();
+
+        for (SmallCategory smallCategory : smallCategories) {
+            if (smallCategory.getId() % 2 != 1) {
+                wantSmallCategories.add(smallCategory);
+            } else {
+                haveSmallCategories.add(smallCategory);
+            }
+        }
+        List<Skills> skiils = new ArrayList<>();
+        for (SmallCategory smallCategory : smallCategories) {
+            List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+            skiils.addAll(skillsForSmallCategory);
+        }
+        List<Skills> wantSkills = new ArrayList<>();
+        List<Skills> haveSkills = new ArrayList<>();
+
+        for (SmallCategory smallCategory : smallCategories) {
+            List<Skills> skillsForSmallCategory = smallCategory.getSkills();
+
+            for (Skills skill : skillsForSmallCategory) {
+                List<WantSkill> wantSkillsForSkill = skill.getWantSkills();
+                List<HaveSkill> haveSkillsForSkill = skill.getHaveSkills();
+
+                if (!wantSkillsForSkill.isEmpty()) {
+                    wantSkills.add(skill);
+                } else if (!haveSkillsForSkill.isEmpty()) {
+                    haveSkills.add(skill);
+                }
+            }
+        }
+        model.addAttribute("userDto", user);
+        model.addAttribute("wantCategories", wantCategories);
+        model.addAttribute("haveCategories", haveCategories);
+        model.addAttribute("wantSmallCategories", wantSmallCategories);
+        model.addAttribute("haveSmallCategories", haveSmallCategories);
+        model.addAttribute("wantSkills", wantSkills);
+        model.addAttribute("haveSkills", haveSkills);
         return "user-update";
     }
 
@@ -166,19 +338,88 @@ public class UserController {
     @PostMapping("/main/user/update")
     @Operation(summary = "회원 정보 수정 요청", description = "회원 정보 수정 요청 입니다.", tags = {"UserRequest"})
     public String updateUser(
-            MultipartFile profile,
+            @RequestParam("wantSkillCategory") String wantSkillCategory,
+            @RequestParam("smallWantSkillCategory") String smallWantSkillCategory,
+            @RequestParam("wantSkillKeyword1") String wantSkillKeyword1,
+            @RequestParam("wantSkillKeyword2") String wantSkillKeyword2,
+            @RequestParam("wantSkillKeyword3") String wantSkillKeyword3,
+            @RequestParam("haveSkillCategory") String haveSkillCategory,
+            @RequestParam("smallHaveSkillCategory") String smallHaveSkillCategory,
+            @RequestParam("haveSkillKeyword1") String haveSkillKeyword1,
+            @RequestParam("haveSkillKeyword2") String haveSkillKeyword2,
+            @RequestParam("haveSkillKeyword3") String haveSkillKeyword3,
             Principal principal,
-            UserDto userDto
+            MultipartFile profile
     ) throws Exception {
-        userService.deleteByImage(principal.getName());
-        UserDto updateUser = userService.findByUser(principal.getName());
-        updateUser.setName(userDto.getName());
-        updateUser.setIntroduce(userDto.getIntroduce());
-        updateUser.setOpenChat(userDto.getOpenChat());
-        updateUser.setEmail(userDto.getEmail());
-        userService.update(updateUser,profile);
-        return "redirect:/main/user/detail";
+        if (profile != null) {
+            UserDto userProfileChange = userService.findByUser(principal.getName());
+            userService.deleteByImage(principal.getName());
+            userService.updateByImage(userProfileChange, profile); //결국에는 저장하는 메소드라서 오류
+
+            User userEntity = userRepository.findByLoginId(principal.getName());
+            CategoryDto haveCategory = new CategoryDto();
+            haveCategory.setCategoryname(haveSkillCategory);
+            Category haveCategoryEntity = haveCategory.toEntity(userEntity);
+            SmallCategoryDto smallHaveCategory = new SmallCategoryDto();
+            smallHaveCategory.setSmallcategoryname(smallHaveSkillCategory);
+            SmallCategory smallHaveEntity = smallHaveCategory.toEntity(haveCategoryEntity);
+            SkillsDto haveSkill = new SkillsDto();
+            haveSkill.setSkillname(haveSkillKeyword1);
+            haveSkill.setSkillname2(haveSkillKeyword2);
+            haveSkill.setSkillname3(haveSkillKeyword3);
+            Skills haveSkillEntity = haveSkill.toEntity(smallHaveEntity);
+            HaveSkillDto haveEntity = new HaveSkillDto();
+            haveSkillService.save(haveEntity,haveSkillEntity);
+
+            CategoryDto wantCategory = new CategoryDto();
+            wantCategory.setCategoryname(wantSkillCategory);
+            Category wantCategoryEntity = wantCategory.toEntity(userEntity);
+            SmallCategoryDto smallWantCategory = new SmallCategoryDto();
+            smallWantCategory.setSmallcategoryname(smallWantSkillCategory);
+            SmallCategory smallWantEntity = smallWantCategory.toEntity(wantCategoryEntity);
+            SkillsDto wantSkill = new SkillsDto();
+            wantSkill.setSkillname(wantSkillKeyword1);
+            wantSkill.setSkillname2(wantSkillKeyword2);
+            wantSkill.setSkillname3(wantSkillKeyword3);
+            Skills wantSkillEntity = wantSkill.toEntity(smallWantEntity);
+            WantSkillDto wantEntity = new WantSkillDto();
+            wantSkillService.save(wantEntity,wantSkillEntity);
+        }
+
+        UserDto originalUser = userService.findByUser(principal.getName());
+
+        User userEntity = originalUser.toEntity();
+
+        CategoryDto haveCategory = new CategoryDto();
+        haveCategory.setCategoryname(haveSkillCategory);
+        Category haveCategoryEntity = haveCategory.toEntity(userEntity);
+        SmallCategoryDto smallHaveCategory = new SmallCategoryDto();
+        smallHaveCategory.setSmallcategoryname(smallHaveSkillCategory);
+        SmallCategory smallHaveEntity = smallHaveCategory.toEntity(haveCategoryEntity);
+        SkillsDto haveSkill = new SkillsDto();
+        haveSkill.setSkillname(haveSkillKeyword1);
+        haveSkill.setSkillname2(haveSkillKeyword2);
+        haveSkill.setSkillname3(haveSkillKeyword3);
+        Skills haveSkillEntity = haveSkill.toEntity(smallHaveEntity);
+        HaveSkillDto haveEntity = new HaveSkillDto();
+        haveSkillService.save(haveEntity,haveSkillEntity);
+
+        CategoryDto wantCategory = new CategoryDto();
+        wantCategory.setCategoryname(wantSkillCategory);
+        Category wantCategoryEntity = wantCategory.toEntity(userEntity);
+        SmallCategoryDto smallWantCategory = new SmallCategoryDto();
+        smallWantCategory.setSmallcategoryname(smallWantSkillCategory);
+        SmallCategory smallWantEntity = smallWantCategory.toEntity(wantCategoryEntity);
+        SkillsDto wantSkill = new SkillsDto();
+        wantSkill.setSkillname(wantSkillKeyword1);
+        wantSkill.setSkillname2(wantSkillKeyword2);
+        wantSkill.setSkillname3(wantSkillKeyword3);
+        Skills wantSkillEntity = wantSkill.toEntity(smallWantEntity);
+        WantSkillDto wantEntity = new WantSkillDto();
+        wantSkillService.save(wantEntity,wantSkillEntity);
+        return "redirect:/main/user";
     }
+
 
     @GetMapping("/files/{profileName}")
     @Operation(summary = "사진 바이트 변환 ", description = "빌드 후 사진을 꺼내오기 위한 작업입니다.", tags = "UserRequest")

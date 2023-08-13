@@ -20,5 +20,7 @@ public class HaveSkill {
     @Builder
     public HaveSkill(Skills haveSkills) {
         this.haveSkills = haveSkills;
+
     }
+
 }

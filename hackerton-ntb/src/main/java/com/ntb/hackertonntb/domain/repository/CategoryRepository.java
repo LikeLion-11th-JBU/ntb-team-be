@@ -1,6 +1,7 @@
 package com.ntb.hackertonntb.domain.repository;
 
 import com.ntb.hackertonntb.domain.entity.Category;
+import com.ntb.hackertonntb.domain.entity.SmallCategory;
 import com.ntb.hackertonntb.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,6 +12,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     Category findById(int id);
 
-    List<Category> findByIdContaining(int id);
+    List<SmallCategory> findByIdContaining(Category category);
 
 }
