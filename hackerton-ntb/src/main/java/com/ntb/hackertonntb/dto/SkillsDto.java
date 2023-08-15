@@ -21,11 +21,6 @@ public class SkillsDto {
     @NotBlank(message = "재능은 필수 입력 값 입니다.")
     private String skillname;
 
-    @NotBlank(message = "재능은 필수 입력 값 입니다.")
-    private String skillname2;
-
-    @NotBlank(message = "재능은 필수 입력 값 입니다.")
-    private String skillname3;
 
     private SmallCategory smallCategories;
 
@@ -37,8 +32,6 @@ public class SkillsDto {
     public Skills toEntity(SmallCategory smallCategories){
         Skills build = Skills.builder()
                 .skillname(skillname)
-                .skillname2(skillname2)
-                .skillname3(skillname3)
                 .smallCategories(smallCategories)
                 .build();
         return build;
@@ -46,14 +39,10 @@ public class SkillsDto {
 
     @Builder
     public SkillsDto(String skillname,
-                     String skillname2,
-                     String skillname3,
                      SmallCategory smallCategories,
                      List<HaveSkill> haveSkills,
                      List<WantSkill> wantSkills){  // 리스트들을 받는 생성자 추가
         this.skillname = skillname;
-        this.skillname2 = skillname2;
-        this.skillname3 = skillname3;
         this.smallCategories = smallCategories;
         this.haveSkills = haveSkills;
         this.wantSkills = wantSkills;
