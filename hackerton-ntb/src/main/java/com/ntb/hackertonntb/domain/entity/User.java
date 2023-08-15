@@ -1,18 +1,15 @@
 package com.ntb.hackertonntb.domain.entity;
 
-import com.ntb.hackertonntb.dto.UserDto;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends TimeEntity{
+public class User extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -42,9 +39,6 @@ public class User extends TimeEntity{
     @Column(length = 245, nullable = false)
     private String profilePath;
 
-    @Column
-    private String role;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
     private List<Category> categories = new ArrayList<>();
 
@@ -62,9 +56,8 @@ public class User extends TimeEntity{
             String email,
             String profileName,
             String profilePath,
-            String role,
             List<Category> categories
-    ){
+    ) {
         this.loginId = loginId;
         this.password = password;
         this.introduce = introduce;
@@ -73,7 +66,6 @@ public class User extends TimeEntity{
         this.email = email;
         this.profileName = profileName;
         this.profilePath = profilePath;
-        this.role = role;
         this.categories = categories;
     }
 

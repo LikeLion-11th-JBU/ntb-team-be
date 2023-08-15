@@ -1,12 +1,18 @@
 package com.ntb.hackertonntb.domain.entity;
 
-import com.ntb.hackertonntb.dto.WantSkillDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -38,7 +44,7 @@ public class Skills {
 
     @Builder
     public Skills(String skillname, String skillname2, String skillname3, SmallCategory smallCategories,
-                  List<HaveSkill> haveSkills, List<WantSkill> wantSkills){  // 생성자에 리스트들 추가
+                  List<HaveSkill> haveSkills, List<WantSkill> wantSkills) {  // 생성자에 리스트들 추가
         this.skillname = skillname;
         this.skillname2 = skillname2;
         this.skillname3 = skillname3;

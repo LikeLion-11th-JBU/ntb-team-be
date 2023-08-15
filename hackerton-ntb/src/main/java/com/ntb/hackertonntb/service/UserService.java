@@ -1,5 +1,6 @@
 package com.ntb.hackertonntb.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntb.hackertonntb.domain.entity.*;
 import com.ntb.hackertonntb.domain.repository.*;
 import com.ntb.hackertonntb.dto.*;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,11 +38,10 @@ public class UserService implements UserDetailsService {
     private final HaveSkillService haveSkillService;
 
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // UserDetailService 의 필수 method
+    // 로그인을 위한 UserDetailService 의 필수 method
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
         final User user = userRepository.findByLoginId(loginId);
@@ -48,9 +49,13 @@ public class UserService implements UserDetailsService {
         };
     }
 
+    // 모든 사용자 정보를 가져옵니다.
+    public List<Object[]> getUserAndConnectedTablesByLoginId(String loginId) {
+        return userRepository.getUserAndConnectedTablesByLoginId(loginId);
+    }
+
     // 회원 가입 기능 입니다.
     public void save(UserDto userDto, MultipartFile profile) throws Exception {
-
         // 프로필 사진 저장
         String projectPath = Paths.get(
                 System.getProperty("user.dir"),
@@ -69,11 +74,11 @@ public class UserService implements UserDetailsService {
 
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encryptedPassword);
-        userDto.setRole("SUPER");
 
         User newUser = userDto.toEntity();
         userRepository.save(newUser);
     }
+
 
     // 아이디 중복 체크입니다.
     public boolean checkLoginIdDuplicate(String loginId) {
@@ -141,6 +146,8 @@ public class UserService implements UserDetailsService {
             userProfile.delete();
         }
     }
+
+
     // 프로필 사진 변경 업로드
     public void updateByImage(UserDto userDto, MultipartFile profile) throws Exception {
 

@@ -48,8 +48,6 @@ public class UserDto {
 
     private String profilePath;
 
-    private String role;
-
     private List<Category> categories;
 
 
@@ -63,7 +61,6 @@ public class UserDto {
                 .email(email)
                 .profileName(profileName)
                 .profilePath(profilePath)
-                .role(role)
                 .build();  //build() 가 객체를 생성해 돌려준다.
         return build;
     }
@@ -79,7 +76,6 @@ public class UserDto {
             String email,
             String profileName,
             String profilePath,
-            String role,
             List<Category> categories
     ){
         this.loginId = loginId;
@@ -91,7 +87,6 @@ public class UserDto {
         this.email = email;
         this.profileName = profileName;
         this.profilePath = profilePath;
-        this.role = role;
         this.categories = categories;
     }
 

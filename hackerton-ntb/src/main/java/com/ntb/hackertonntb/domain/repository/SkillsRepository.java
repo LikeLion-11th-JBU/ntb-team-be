@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface SkillsRepository extends JpaRepository<Skills, Integer> {
 
-    Skills findById(int id);
 
     List<Skills> findByIdContaining(String keyword);
 }

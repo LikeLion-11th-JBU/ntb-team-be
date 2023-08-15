@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,11 +25,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
+
     public WebSecurityConfig(
             @Autowired UserService userService
     ) {
         userDetailsService = userService;
     }
+
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     @Autowired
     private DataSource dataSource;
 
@@ -36,9 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.userDetailsService);
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .rolePrefix("ROLE_");
     }
 
 
@@ -47,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() //이거 추가하면 우회 하는거고 사실상 보안상 취약함
                 .authorizeRequests()
-//                .antMatchers("/main/super").hasRole("SUPER")
                 .antMatchers(
                         "/**"
 //                        "/swagger-ui/index.html",
