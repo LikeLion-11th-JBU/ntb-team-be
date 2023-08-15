@@ -1,18 +1,10 @@
 package com.ntb.hackertonntb.domain.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.ntb.hackertonntb.dto.UserDto;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -42,10 +34,5 @@ public class Category {
         this.users = users;
         this.smallCategories = smallCategories;
     }
-
-
-
-
-
 
 }

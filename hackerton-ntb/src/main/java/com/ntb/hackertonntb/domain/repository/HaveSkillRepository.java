@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface HaveSkillRepository extends JpaRepository<HaveSkill, Integer> {
+public interface HaveSkillRepository extends JpaRepository<HaveSkill, Long> {
 
     List<HaveSkill> findByIdContaining(String keyword);
 }

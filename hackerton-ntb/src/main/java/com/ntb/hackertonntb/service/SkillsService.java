@@ -2,9 +2,7 @@ package com.ntb.hackertonntb.service;
 
 import com.ntb.hackertonntb.domain.entity.Skills;
 import com.ntb.hackertonntb.domain.entity.SmallCategory;
-import com.ntb.hackertonntb.domain.entity.WantSkill;
 import com.ntb.hackertonntb.domain.repository.SkillsRepository;
-import com.ntb.hackertonntb.domain.repository.WantSkillRepository;
 import com.ntb.hackertonntb.dto.SkillsDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +17,6 @@ public class SkillsService {
     private static final Logger logger = LoggerFactory.getLogger(SkillsService.class);
 
     private final SkillsRepository skillsRepository;
-
-
 
     public void save(SkillsDto skillsDto, SmallCategory smallCategories) {
 

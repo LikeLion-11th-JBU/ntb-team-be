@@ -1,11 +1,8 @@
 package com.ntb.hackertonntb.domain.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -15,7 +12,7 @@ public class WantSkill {
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "skills_id", nullable = false)
     private Skills wantSkills;
 
@@ -23,6 +20,4 @@ public class WantSkill {
     public WantSkill(Skills wantSkills) {
         this.wantSkills = wantSkills;
     }
-
-
 }

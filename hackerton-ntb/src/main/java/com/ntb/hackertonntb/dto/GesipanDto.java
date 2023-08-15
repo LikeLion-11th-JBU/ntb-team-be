@@ -4,6 +4,8 @@ import com.ntb.hackertonntb.domain.entity.Gesipan;
 import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Getter
@@ -35,4 +37,8 @@ public class GesipanDto {
         this.date = date;
         this.users = users;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

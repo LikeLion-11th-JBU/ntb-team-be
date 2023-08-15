@@ -29,11 +29,4 @@ public class CategoryService {
         Category newCategory = categoryDto.toEntity(users);
         categoryRepository.save(newCategory);
     }
-
-
-
-
-
-
-
 }

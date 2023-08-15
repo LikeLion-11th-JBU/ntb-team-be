@@ -1,6 +1,5 @@
 package com.ntb.hackertonntb.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntb.hackertonntb.domain.entity.*;
 import com.ntb.hackertonntb.domain.repository.*;
 import com.ntb.hackertonntb.dto.*;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

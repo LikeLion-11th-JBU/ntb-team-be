@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Principal;
 import java.util.*;
 
 @CrossOrigin(origins = "*")
@@ -34,16 +32,9 @@ public class UserController {
 
 
     private final UserService userService;
-    private final CategoryService categoryService;
-    private final SkillsService skillsService;
-    private final SmallCategoryService smallCategoryService;
     private final HaveSkillService haveSkillService;
     private final WantSkillService wantSkillService;
     private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
-    private final SmallCategoryRepository smallCategoryRepository;
-    private final WantSkillRepository wantSkillRepository;
-    private final SkillsRepository skillsRepository;
 
 
     @GetMapping("main")
@@ -53,41 +44,6 @@ public class UserController {
         return ResponseEntity.ok("환영 합니다");
     }
 
-
-
-    @GetMapping("/test")
-    public ResponseEntity<Object> test() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String loginId = authentication.getName();
-            List<Object[]> userData = userService.getUserAndConnectedTablesByLoginId(loginId);
-            if (!userData.isEmpty()) {
-                List<Map<String, Object>> resultList = new ArrayList<>();
-                String[] identifiers = {"have", "want"};
-                int identifierIndex = 0;
-                for (Object[] objects : userData) {
-                    User user = (User) objects[0];
-                    Category category = (Category) objects[1];
-                    SmallCategory smallCategory = (SmallCategory) objects[2];
-                    Skills skill = (Skills) objects[3];
-
-                    Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("username", user.getName());
-                    resultMap.put("introduce", user.getIntroduce());
-                    resultMap.put("openChat", user.getOpenChat());
-                    resultMap.put(identifiers[identifierIndex] + "Category", category.getCategoryname());
-                    resultMap.put(identifiers[identifierIndex] + "SmallCategory", smallCategory.getSmallcategoryname());
-                    resultMap.put(identifiers[identifierIndex] +"Skill", skill.getSkillname());
-
-                    resultList.add(resultMap);
-                    identifierIndex = (identifierIndex + 1) % identifiers.length;
-                }
-                return ResponseEntity.ok(resultList);
-            }
-            return ResponseEntity.ok("none session");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-    }
 
     @GetMapping("main/login")
     @Operation(summary = "로그인 페이지", description = "로그인 페이지 입니다.", tags = {"UserPage"})
@@ -111,10 +67,8 @@ public class UserController {
             String haveSkillCategory = requestData.getHaveSkillCategory();
             String smallHaveSkillCategory = requestData.getSmallHaveSkillCategory();
             String haveSkillKeyword = requestData.getHaveSkillKeyword();
-
             userService.save(userDto, profile);
             User userEntity = userRepository.findByLoginId(userDto.getLoginId());
-
             CategoryDto haveCategory = new CategoryDto();
             haveCategory.setCategoryname(haveSkillCategory);
             Category haveCategoryEntity = haveCategory.toEntity(userEntity);
@@ -126,7 +80,6 @@ public class UserController {
             Skills haveSkillEntity = haveSkill.toEntity(smallHaveEntity);
             HaveSkillDto haveEntity = new HaveSkillDto();
             haveSkillService.save(haveEntity, haveSkillEntity);
-
             CategoryDto wantCategory = new CategoryDto();
             wantCategory.setCategoryname(wantSkillCategory);
             Category wantCategoryEntity = wantCategory.toEntity(userEntity);
@@ -182,7 +135,6 @@ public class UserController {
                     Category category = (Category) objects[1];
                     SmallCategory smallCategory = (SmallCategory) objects[2];
                     Skills skill = (Skills) objects[3];
-
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("username", user.getName());
                     resultMap.put("introduce", user.getIntroduce());
@@ -190,7 +142,6 @@ public class UserController {
                     resultMap.put(identifiers[identifierIndex] + "Category", category.getCategoryname());
                     resultMap.put(identifiers[identifierIndex] + "SmallCategory", smallCategory.getSmallcategoryname());
                     resultMap.put(identifiers[identifierIndex] +"Skill", skill.getSkillname());
-
                     resultList.add(resultMap);
                     identifierIndex = (identifierIndex + 1) % identifiers.length;
                 }
@@ -219,7 +170,6 @@ public class UserController {
                     Category category = (Category) objects[1];
                     SmallCategory smallCategory = (SmallCategory) objects[2];
                     Skills skill = (Skills) objects[3];
-
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("username", user.getName());
                     resultMap.put("introduce", user.getIntroduce());
@@ -227,7 +177,6 @@ public class UserController {
                     resultMap.put(identifiers[identifierIndex] + "Category", category.getCategoryname());
                     resultMap.put(identifiers[identifierIndex] + "SmallCategory", smallCategory.getSmallcategoryname());
                     resultMap.put(identifiers[identifierIndex] +"Skill", skill.getSkillname());
-
                     resultList.add(resultMap);
                     identifierIndex = (identifierIndex + 1) % identifiers.length;
                 }
@@ -270,7 +219,6 @@ public class UserController {
                     Category category = (Category) objects[1];
                     SmallCategory smallCategory = (SmallCategory) objects[2];
                     Skills skill = (Skills) objects[3];
-
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("username", user.getName());
                     resultMap.put("introduce", user.getIntroduce());
@@ -278,7 +226,6 @@ public class UserController {
                     resultMap.put(identifiers[identifierIndex] + "Category", category.getCategoryname());
                     resultMap.put(identifiers[identifierIndex] + "SmallCategory", smallCategory.getSmallcategoryname());
                     resultMap.put(identifiers[identifierIndex] +"Skill", skill.getSkillname());
-
                     resultList.add(resultMap);
                     identifierIndex = (identifierIndex + 1) % identifiers.length;
                 }
@@ -299,10 +246,8 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if ((authentication != null && authentication.isAuthenticated())) {
                 if (profile != null) {
-
                     User user = userRepository.findByLoginId(authentication.getName());
                     userService.deleteByImage(user.getLoginId());
-
                     UserDto userDto = requestData.getUserDto();
                     String wantSkillCategory = requestData.getWantSkillCategory();
                     String smallWantSkillCategory = requestData.getSmallWantSkillCategory();

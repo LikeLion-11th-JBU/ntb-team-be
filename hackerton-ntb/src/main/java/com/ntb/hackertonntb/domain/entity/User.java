@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,6 +69,4 @@ public class User extends TimeEntity {
         this.profilePath = profilePath;
         this.categories = categories;
     }
-
-
 }

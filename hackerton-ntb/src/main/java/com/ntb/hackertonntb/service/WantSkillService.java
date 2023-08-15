@@ -1,11 +1,8 @@
 package com.ntb.hackertonntb.service;
 
-import com.ntb.hackertonntb.domain.entity.HaveSkill;
 import com.ntb.hackertonntb.domain.entity.Skills;
 import com.ntb.hackertonntb.domain.entity.WantSkill;
-import com.ntb.hackertonntb.domain.repository.HaveSkillRepository;
 import com.ntb.hackertonntb.domain.repository.WantSkillRepository;
-import com.ntb.hackertonntb.dto.HaveSkillDto;
 import com.ntb.hackertonntb.dto.WantSkillDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

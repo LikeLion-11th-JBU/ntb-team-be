@@ -4,6 +4,9 @@ import com.ntb.hackertonntb.domain.entity.Skills;
 import com.ntb.hackertonntb.domain.entity.WantSkill;
 import lombok.*;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 
 @Getter
 @Setter
@@ -11,6 +14,8 @@ import lombok.*;
 @NoArgsConstructor
 public class WantSkillDto {
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "skills_id")
     private Skills wantSkills;
 
     public WantSkill toEntity(Skills wantSkills){
@@ -24,4 +29,5 @@ public class WantSkillDto {
     public WantSkillDto(Skills wantSkills){
         this.wantSkills = wantSkills;
     }
+
 }

@@ -1,11 +1,8 @@
 package com.ntb.hackertonntb.domain.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -24,7 +21,4 @@ public class HaveSkill {
         this.haveSkills = haveSkills;
 
     }
-
-
-
 }

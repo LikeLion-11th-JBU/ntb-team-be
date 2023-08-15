@@ -5,7 +5,11 @@ import com.ntb.hackertonntb.domain.entity.SmallCategory;
 import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import com.ntb.hackertonntb.domain.entity.Skills;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,8 +23,12 @@ public class CategoryDto {
     @NotBlank(message = "카테고리는 필수 선택 값 입니다.")
     private String categoryname;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User users;
 
+    @OneToMany(mappedBy = "categories")
     private List<SmallCategory> smallCategories;
 
     public Category toEntity(User users){

@@ -1,17 +1,16 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.Category;
+import com.ntb.hackertonntb.domain.entity.Gesipan;
 import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -37,6 +36,8 @@ public class UserDto {
 
     @NotBlank(message = "이름은 필수 입력값입니다.")
     private String name;
+    private byte userimage;
+    private String openemail;
 
     @NotBlank(message = "오픈 채팅 주소는 필수 입력값입니다.")
     private String openChat;
@@ -48,6 +49,7 @@ public class UserDto {
 
     private String profilePath;
 
+    @OneToMany(mappedBy = "users")
     private List<Category> categories;
 
 
@@ -80,6 +82,7 @@ public class UserDto {
     ){
         this.loginId = loginId;
         this.password = password;
+        this.password = password;
         this.introduce = introduce;
         this.name = name;
         this.openChat = openChat;
@@ -90,4 +93,6 @@ public class UserDto {
         this.categories = categories;
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<Gesipan> gesipan;
 }

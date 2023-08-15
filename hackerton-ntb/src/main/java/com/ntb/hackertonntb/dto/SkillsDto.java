@@ -3,11 +3,8 @@ package com.ntb.hackertonntb.dto;
 import com.ntb.hackertonntb.domain.entity.*;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,11 +18,14 @@ public class SkillsDto {
     @NotBlank(message = "재능은 필수 입력 값 입니다.")
     private String skillname;
 
-
+    @ManyToOne
+    @JoinColumn(name = "smallcategory_id")
     private SmallCategory smallCategories;
 
+    @OneToMany(mappedBy = "skills")
     private List<HaveSkill> haveSkills;
 
+    @OneToMany(mappedBy = "skills")
     private List<WantSkill> wantSkills;
 
 
@@ -47,5 +47,9 @@ public class SkillsDto {
         this.haveSkills = haveSkills;
         this.wantSkills = wantSkills;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }
