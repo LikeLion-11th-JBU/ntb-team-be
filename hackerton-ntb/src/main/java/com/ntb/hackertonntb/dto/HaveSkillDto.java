@@ -1,7 +1,11 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.HaveSkill;
+import com.ntb.hackertonntb.domain.entity.Skills;
 import lombok.*;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 @Getter
@@ -22,4 +26,8 @@ public class HaveSkillDto {
     public HaveSkillDto(int id){
         this.id = id;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "skills_id")
+    private Skills skills;
 }

@@ -1,8 +1,11 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.Gesipan;
+import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Getter
@@ -31,4 +34,8 @@ public class GesipanDto {
         this.comment = comment;
         this.date = date;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

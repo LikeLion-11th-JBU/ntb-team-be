@@ -1,7 +1,12 @@
 package com.ntb.hackertonntb.dto;
 
 import com.ntb.hackertonntb.domain.entity.Category;
+import com.ntb.hackertonntb.domain.entity.Skills;
+import com.ntb.hackertonntb.domain.entity.User;
 import lombok.*;
+
+import javax.persistence.OneToMany;
+import java.util.List;
 
 
 @Getter
@@ -25,4 +30,10 @@ public class CategoryDto {
         this.id = id;
         this.categoryname = categoryname;
     }
+
+    @OneToMany(mappedBy = "category")
+    private List<Skills> skills;
+
+    @OneToMany(mappedBy = "category")
+    private List<User> users;
 }

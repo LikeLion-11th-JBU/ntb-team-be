@@ -2,10 +2,7 @@ package com.ntb.hackertonntb.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -27,12 +24,20 @@ public class User extends TimeEntity{
     @Column(length = 45, nullable = false)
     private String name;
 
+    @Column(length = 50, nullable = false)
+    private String openeamil;
+
+    @Lob
+    private byte[] userimage;
+
     @Builder
-    public User(int id, String loginid, String loginpassword, String introduce, String name){
+    public User(int id, String loginid, String loginpassword, String introduce, String name, byte userimage, String openeamil){
         this.id = id;
         this.loginid = loginid;
         this.loginpassword = loginpassword;
         this.introduce = introduce;
         this.name = name;
+        this.openeamil = openeamil;
+        this.userimage = new byte[]{userimage};
     }
 }
