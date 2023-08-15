@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -77,6 +79,13 @@ public class UserService implements UserDetailsService {
 
         User newUser = userDto.toEntity();
         userRepository.save(newUser);
+    }
+
+    //회원 업데이트 입니다.
+    @Transactional
+    public void update(UserDto userDto) throws Exception {
+        User updateUser = userDto.toEntity();
+        userRepository.save(updateUser);
     }
 
 
@@ -149,7 +158,7 @@ public class UserService implements UserDetailsService {
 
 
     // 프로필 사진 변경 업로드
-    public void updateByImage(UserDto userDto, MultipartFile profile) throws Exception {
+    public void updateByImage(String loginId, MultipartFile profile) throws Exception {
 
         // 프로필 사진 저장
         String projectPath = Paths.get(
@@ -164,9 +173,10 @@ public class UserService implements UserDetailsService {
         String profileName = uuid + "_" + profile.getOriginalFilename();
         File savefile = new File(projectPath, profileName);
         profile.transferTo(savefile);
-        userDto.setProfileName(profileName);
-        userDto.setProfilePath("/files/" + profileName);
-        User newUser = userDto.toEntity();
+        UserDto changeUser = findByUser(loginId);
+        changeUser.setProfileName(profileName);
+        changeUser.setProfilePath("/files/" + profileName);
+        User newUser = changeUser.toEntity();
         userRepository.save(newUser);
     }
 }

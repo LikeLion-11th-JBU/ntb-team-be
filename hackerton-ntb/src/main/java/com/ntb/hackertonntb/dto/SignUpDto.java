@@ -15,12 +15,8 @@ public class SignUpDto {
     private UserDto userDto;
     private String wantSkillCategory;
     private String smallWantSkillCategory;
-    private String wantSkillKeyword1;
-    private String wantSkillKeyword2;
-    private String wantSkillKeyword3;
+    private String wantSkillKeyword;
     private String haveSkillCategory;
     private String smallHaveSkillCategory;
-    private String haveSkillKeyword1;
-    private String haveSkillKeyword2;
-    private String haveSkillKeyword3;
+    private String haveSkillKeyword;
 }

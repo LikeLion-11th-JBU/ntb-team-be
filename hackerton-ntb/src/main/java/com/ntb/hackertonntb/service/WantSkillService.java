@@ -11,7 +11,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Data
@@ -24,6 +27,14 @@ public class WantSkillService {
 
 
     public void save(WantSkillDto wantSkillDto, Skills skills) {
+
+        WantSkill newWantSkills = wantSkillDto.toEntity(skills);
+        wantSkillRepository.save(newWantSkills);
+    }
+
+    @Transactional
+    @Modifying
+    public void update(WantSkillDto wantSkillDto, Skills skills) {
 
         WantSkill newWantSkills = wantSkillDto.toEntity(skills);
         wantSkillRepository.save(newWantSkills);
