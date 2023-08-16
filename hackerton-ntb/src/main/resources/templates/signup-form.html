@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label, input, textarea {
+            display: block;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            display: block;
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap">
+    <script th:inline="javascript">
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var passwordCheck = document.getElementById("passwordCheck").value;
+
+            if (password !== passwordCheck) {
+                alert("비밀번호가 서로 일치하지 않습니다.");
+                return false; // 중단시키기 위해 false 반환
+            }
+
+            return true; // 폼 제출 진행
+
+    async function checkLoginIdDuplicate() {
+        var loginId = document.getElementById("loginId").value;
+        console.log("입력값:", loginId);
+
+        try {
+            const response = await fetch(`/main/signup/${encodeURIComponent(loginId)}/exists`);
+            const data = await response.json();
+
+            if (data === true) {
+                alert("중복된 아이디입니다.");
+            } else {
+                alert("사용 가능한 아이디입니다.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    </script>
+</head>
+<body>
+<form action="/main/signup" method="post" th:object="${userDto}" enctype="multipart/form-data" onsubmit="return validateForm();">
+    <h1>회원가입</h1>
+    <label for="profile">프로필 사진:</label>
+    <input type="file" id="profile" name="profile" accept=".jpg, .png" required>
+
+
+    <label for="loginId">로그인 아이디:</label>
+    <input type="text" id="loginId" name="loginId"  placeholder="아이디를 입력해주세요" required>
+    <button type="button" onclick="checkLoginIdDuplicate()">아이디 중복 확인</button>
+
+
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" placeholder="비밀번호는 8~16자리수여야 합니다. 영문 대소문자, 숫자, 특수문자를 1개 이상 포함해야 합니다." required>
+
+        <label for="passwordCheck">비밀번호 확인:</label>
+        <input type="password" id="passwordCheck" name="password_check" required>
+
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="Introduce">소개:</label>
+    <textarea type= "text" id="Introduce" name="Introduce"  required></textarea>
+
+    <label for="openChat">오픈 채팅 주소:</label>
+    <input type="text" id="openChat" name="openChat"  required>
+
+    <label for="email">이메일:</label>
+    <input type="text" id="email" name="email" placeholder="이메일 양식을 지켜주세요" required>
+
+        <label for="haveSkillCategory">주고 싶은 재능 카테고리:</label>
+        <input type="text" id="haveSkillCategory" name="haveSkillCategory" required>
+
+    <label for="smallHaveSkillCategory">주고 싶은 재능 세부 카테고리:</label>
+    <input type="text" id="smallHaveSkillCategory" name="smallHaveSkillCategory" required>
+
+        <label for="haveSkillKeyword1">주고 싶은 재능 1:</label>
+        <input type="text" id="haveSkillKeyword1" name="haveSkillKeyword1" required>
+
+        <label for="haveSkillKeyword2">주고 싶은 재능 2:</label>
+        <input type="text" id="haveSkillKeyword2" name="haveSkillKeyword2" required>
+
+        <label for="haveSkillKeyword3">주고 싶은 재능 3:</label>
+        <input type="text" id="haveSkillKeyword3" name="haveSkillKeyword3" required>
+
+        <label for="wantSkillCategory">원하는 재능 카테고리:</label>
+        <input type="text" id="wantSkillCategory" name="wantSkillCategory" required>
+
+    <label for="smallWantSkillCategory">원하는 재능 세부 카테고리:</label>
+    <input type="text" id="smallWantSkillCategory" name="smallWantSkillCategory" required>
+
+
+        <label for="wantSkillKeyword1">원하는 재능 1:</label>
+        <input type="text" id="wantSkillKeyword1" name="wantSkillKeyword1" required>
+
+        <label for="wantSkillKeyword2">원하는 재능 2:</label>
+        <input type="text" id="wantSkillKeyword2" name="wantSkillKeyword2" required>
+
+        <label for="wantSkillKeyword3">원하는 재능 3:</label>
+        <input type="text" id="wantSkillKeyword3" name="wantSkillKeyword3" required>
+
+    <button type="submit">회원가입</button>
+</form>
+
+</body>
+</html>

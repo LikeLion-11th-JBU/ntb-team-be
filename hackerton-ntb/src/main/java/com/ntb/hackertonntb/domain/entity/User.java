@@ -3,20 +3,24 @@ package com.ntb.hackertonntb.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends TimeEntity{
+public class User extends TimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
 
-    @Column(length = 45, nullable = false)
-    private String loginid;
+    @Column(length = 45, nullable = false, unique = true)
+    private String loginId;
 
-    @Column(length = 45, nullable = false)
-    private String loginpassword;
+    @Column(length = 255, nullable = false)
+    private String password;
 
     @Column(length = 245, nullable = false)
     private String introduce;
@@ -24,20 +28,45 @@ public class User extends TimeEntity{
     @Column(length = 45, nullable = false)
     private String name;
 
-    @Column(length = 50, nullable = false)
-    private String openeamil;
+    @Column(length = 45, nullable = false)
+    private String openChat;
 
-    @Lob
-    private byte[] userimage;
+    @Column(length = 45, nullable = false)
+    private String email;
+
+    @Column(length = 245, nullable = false)
+    private String profileName;
+
+    @Column(length = 245, nullable = false)
+    private String profilePath;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Gesipan> gesipans = new ArrayList<>();
+
 
     @Builder
-    public User(int id, String loginid, String loginpassword, String introduce, String name, byte userimage, String openeamil){
-        this.id = id;
-        this.loginid = loginid;
-        this.loginpassword = loginpassword;
+    public User(
+            String loginId,
+            String password,
+            String introduce,
+            String name,
+            String openChat,
+            String email,
+            String profileName,
+            String profilePath,
+            List<Category> categories
+    ) {
+        this.loginId = loginId;
+        this.password = password;
         this.introduce = introduce;
         this.name = name;
-        this.openeamil = openeamil;
-        this.userimage = new byte[]{userimage};
+        this.openChat = openChat;
+        this.email = email;
+        this.profileName = profileName;
+        this.profilePath = profilePath;
+        this.categories = categories;
     }
 }

@@ -15,19 +15,20 @@ import javax.persistence.ManyToOne;
 public class HaveSkillDto {
     private int id;
 
-    public HaveSkill toEntity(){
+    @ManyToOne
+    @JoinColumn(name = "skills_id")
+    private Skills haveSkills;
+
+    public HaveSkill toEntity(Skills haveSkills){
         HaveSkill build = HaveSkill.builder()
-                .id(id)
+                .haveSkills(haveSkills)
                 .build();
         return build;
     }
 
     @Builder
-    public HaveSkillDto(int id){
-        this.id = id;
+    public HaveSkillDto(Skills haveSkills){
+        this.haveSkills = haveSkills;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "skills_id")
-    private Skills skills;
 }

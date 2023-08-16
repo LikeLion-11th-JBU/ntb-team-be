@@ -8,4 +8,5 @@ import java.util.List;
 public interface WantSkillRepository extends JpaRepository<WantSkill, Long> {
 
     List<WantSkill> findByIdContaining(String keyword);
+
 }

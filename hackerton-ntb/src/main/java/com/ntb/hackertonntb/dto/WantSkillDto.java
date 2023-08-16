@@ -14,20 +14,20 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 public class WantSkillDto {
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "skills_id")
+    private Skills wantSkills;
 
-    public WantSkill toEntity(){
+    public WantSkill toEntity(Skills wantSkills){
         WantSkill build = WantSkill.builder()
-                .id(id)
+                .wantSkills(wantSkills)
                 .build();
         return build;
     }
 
     @Builder
-    public WantSkillDto(int id){
-        this.id = id;
+    public WantSkillDto(Skills wantSkills){
+        this.wantSkills = wantSkills;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "skills_id")
-    private Skills skills;
 }

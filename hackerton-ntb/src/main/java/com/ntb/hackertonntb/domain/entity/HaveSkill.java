@@ -2,20 +2,23 @@ package com.ntb.hackertonntb.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HaveSkill {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "skills_id")
+    private Skills haveSkills;
+
     @Builder
-    public HaveSkill(int id) {
-        this.id = id;
+    public HaveSkill(Skills haveSkills) {
+        this.haveSkills = haveSkills;
+
     }
 }

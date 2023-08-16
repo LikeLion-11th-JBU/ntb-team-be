@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface SkillsRepository extends JpaRepository<Skills, Long> {
 
+
     @Query(value = "SELECT * FROM skills ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<Skills> findRandomSkills(@Param("limit") int limit);
     List<Skills> findByIdContaining(String keyword);
